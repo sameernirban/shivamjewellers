@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Checkout — Shivam Jewellers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--pink:#f2a7b8;--rose:#e8889a;--pink-l:#fdf0f3;--pink-m:#fce4eb;--pink-d:#c97b8e;--text:#1a1a2e;--muted:#7a7a8a;--border:#f0e0e5;--green:#2e7d32;--red:#c62828}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f5f5f8;color:var(--text)}
+.header{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700}
+.logo em{color:var(--rose);font-style:normal}
+.back-btn{background:none;border:none;color:var(--muted);font-size:14px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.back-btn:hover{color:var(--rose)}
+.checkout-wrap{max-width:960px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:768px){.checkout-wrap{grid-template-columns:1fr 380px;padding:32px 24px}}
+.card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--rose);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+.card-head h3{font-size:15px;font-weight:600}
+.card-body{padding:20px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.fg1{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.form-group input,.form-group select,.form-group textarea{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text);background:#fafafa;transition:.2s;width:100%}
+.form-group input:focus,.form-group select:focus{border-color:var(--pink);background:#fff;box-shadow:0 0 0 3px rgba(242,167,184,.15)}
+.pin-row{display:flex;gap:10px;align-items:flex-end}
+.pin-row .form-group{flex:1}
+.pin-check-btn{background:var(--pink-m);color:var(--rose);border:1.5px solid var(--pink);padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;height:44px;transition:.2s}
+.pin-check-btn:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
+.pin-result{margin-top:8px;font-size:13px;padding:8px 12px;border-radius:8px;display:none}
+.pin-ok{background:#e8f5e9;color:var(--green);display:flex;gap:6px;align-items:center}
+.pin-fail{background:#fce4e4;color:var(--red);display:flex;gap:6px;align-items:center}
+.coupon-row{display:flex;gap:10px}
+.coupon-input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text);background:#fafafa;transition:.2s}
+.coupon-input:focus{border-color:var(--pink);background:#fff}
+.apply-btn{background:var(--text);color:#fff;border:none;padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:.2s}
+.apply-btn:hover{background:var(--rose)}
+.coupon-result{margin-top:8px;font-size:13px;padding:8px 12px;border-radius:8px;display:none}
+.pay-options{display:flex;flex-direction:column;gap:10px}
+.pay-opt{display:flex;align-items:center;gap:12px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s}
+.pay-opt:hover{border-color:var(--pink)}
+.pay-opt.selected{border-color:var(--rose);background:var(--pink-l)}
+.pay-opt input[type=radio]{accent-color:var(--rose);width:18px;height:18px;cursor:pointer}
+.pay-opt-label{display:flex;flex-direction:column}
+.pay-opt-label strong{font-size:14px;font-weight:600}
+.pay-opt-label span{font-size:12px;color:var(--muted)}
+.pay-opt-icon{margin-left:auto;font-size:20px}
+.order-summary{position:sticky;top:72px}
+.order-item{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)}
+.order-item:last-child{border:none}
+.oi-img{width:56px;height:56px;background:var(--pink-l);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;overflow:hidden}
+.oi-img img{width:100%;height:100%;object-fit:cover}
+.oi-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.oi-qty{font-size:12px;color:var(--muted)}
+.oi-price{font-size:14px;font-weight:700;color:var(--text);margin-left:auto;white-space:nowrap}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:14px}
+.sum-row span{color:var(--muted)}
+.sum-row strong{font-weight:600;color:var(--text)}
+.sum-total{display:flex;justify-content:space-between;align-items:center;padding:14px 0 0;border-top:1px solid var(--border);margin-top:8px}
+.sum-total span{font-size:15px;font-weight:600}
+.sum-total strong{font-family:'Playfair Display',serif;font-size:22px;color:var(--text)}
+.place-btn{width:100%;background:var(--rose);color:#fff;border:none;padding:15px;border-radius:28px;font-size:16px;font-weight:600;cursor:pointer;transition:.25s;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:8px}
+.place-btn:hover{background:var(--pink-d)}
+.place-btn:disabled{background:#ccc;cursor:not-allowed}
+.secure-note{text-align:center;font-size:12px;color:var(--muted);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.addr-cards{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.addr-card{padding:12px 16px;border:1.5px solid var(--border);border-radius:12px;cursor:pointer;transition:.2s;font-size:13px;position:relative}
+.addr-card:hover{border-color:var(--pink)}
+.addr-card.sel{border-color:var(--rose);background:var(--pink-l)}
+.addr-card strong{display:block;font-size:14px;font-weight:600;margin-bottom:2px}
+.new-addr-toggle{font-size:13px;font-weight:600;color:var(--rose);cursor:pointer;display:flex;align-items:center;gap:6px;margin-bottom:16px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 22px;border-radius:25px;font-size:14px;font-weight:500;z-index:1200;transition:.35s;opacity:0;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#2e7d32}
+.toast.err{background:var(--red)}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div class="header">
+  <button class="back-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Back</button>
+  <a class="logo" href="index.html">Shivam <em>Jewellers</em></a>
+  <div style="width:60px"></div>
+</div>
+
+<div class="checkout-wrap">
+  <div class="left-col">
+
+    <!-- ADDRESS -->
+    <div class="card">
+      <div class="card-head"><div class="step-num">1</div><h3>Delivery Address</h3></div>
+      <div class="card-body">
+        <div class="addr-cards" id="savedAddrs"></div>
+        <div class="new-addr-toggle" onclick="toggleNewAddr()" id="newAddrToggle"><i class="fa-solid fa-plus"></i> Add New Address</div>
+        <div id="newAddrForm" style="display:none">
+          <div class="fg" style="margin-bottom:12px">
+            <div class="form-group"><label>Full Name</label><input type="text" id="aName" placeholder="Recipient name"></div>
+            <div class="form-group"><label>Phone</label><input type="tel" id="aPhone" placeholder="Mobile number" maxlength="10"></div>
+            <div class="form-group full"><label>Address Line 1</label><input type="text" id="aLine1" placeholder="House/Flat no, Street name"></div>
+            <div class="form-group full"><label>Address Line 2</label><input type="text" id="aLine2" placeholder="Area, Colony, Landmark (optional)"></div>
+            <div class="form-group"><label>City</label><input type="text" id="aCity" placeholder="City"></div>
+            <div class="form-group"><label>State</label>
+              <select id="aState">
+                <option value="">Select state</option>
+                <option>Rajasthan</option><option>Delhi</option><option>Maharashtra</option>
+                <option>Gujarat</option><option>Uttar Pradesh</option><option>Punjab</option>
+                <option>Madhya Pradesh</option><option>Karnataka</option><option>Tamil Nadu</option>
+                <option>Other</option>
+              </select>
+            </div>
+          </div>
+          <!-- PIN CHECK -->
+          <div class="pin-row">
+            <div class="form-group"><label>PIN Code</label><input type="tel" id="aPIN" placeholder="6-digit PIN" maxlength="6" oninput="if(this.value.length===6)checkPIN()"></div>
+            <button class="pin-check-btn" onclick="checkPIN()">Check Delivery</button>
+          </div>
+          <div class="pin-result" id="pinResult"></div>
+          <div style="display:flex;gap:10px;margin-top:14px">
+            <button onclick="saveAddress()" style="flex:1;background:var(--text);color:#fff;border:none;padding:12px;border-radius:25px;font-size:14px;font-weight:600;cursor:pointer">Save Address</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COUPON -->
+    <div class="card">
+      <div class="card-head"><div class="step-num">2</div><h3>Coupon Code</h3></div>
+      <div class="card-body">
+        <div class="coupon-row">
+          <input class="coupon-input" type="text" id="couponInput" placeholder="Enter coupon code (try SHIVAM10)" style="text-transform:uppercase">
+          <button class="apply-btn" onclick="applyCoupon()">Apply</button>
+        </div>
+        <div class="coupon-result" id="couponResult"></div>
+        <div style="margin-top:12px;font-size:12px;color:var(--muted)">Available: <span style="color:var(--rose);font-weight:600">SHIVAM10</span> (10% off) · <span style="color:var(--rose);font-weight:600">SAVE200</span> (₹200 off) · <span style="color:var(--rose);font-weight:600">FLAT500</span> (₹500 off)</div>
+      </div>
+    </div>
+
+    <!-- PAYMENT -->
+    <div class="card">
+      <div class="card-head"><div class="step-num">3</div><h3>Payment Method</h3></div>
+      <div class="card-body">
+        <div class="pay-options">
+          <label class="pay-opt selected" onclick="selectPay(this,'razorpay')">
+            <input type="radio" name="pay" value="razorpay" checked>
+            <div class="pay-opt-label"><strong>UPI / Cards / NetBanking</strong><span>Powered by Razorpay — 100% Secure</span></div>
+            <div class="pay-opt-icon">🔐</div>
+          </label>
+          <label class="pay-opt" onclick="selectPay(this,'cod')">
+            <input type="radio" name="pay" value="cod">
+            <div class="pay-opt-label"><strong>Cash on Delivery (COD)</strong><span>Pay when you receive the order</span></div>
+            <div class="pay-opt-icon">💵</div>
+          </label>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ORDER SUMMARY -->
+  <div class="order-summary">
+    <div class="card">
+      <div class="card-head" style="border:none;padding-bottom:0"><h3>Order Summary</h3></div>
+      <div class="card-body">
+        <div id="orderItems"></div>
+        <div id="orderSummary"></div>
+        <button class="place-btn" id="placeBtn" onclick="placeOrder()">
+          <i class="fa-solid fa-lock"></i> Place Order
+        </button>
+        <div class="secure-note"><i class="fa-solid fa-shield-halved" style="color:var(--rose)"></i>256-bit SSL · Razorpay Secured</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+const COUPONS={'SHIVAM10':{type:'percent',val:10},'SAVE200':{type:'flat',val:200},'FLAT500':{type:'flat',val:500}};
+const FREE_SHIP=999,DEL=79;
+let cart=[],appliedCoupon=null,appliedDisc=0,selectedAddr=null,payMethod='razorpay',pinOk=false;
+
+function getUser(){try{return JSON.parse(localStorage.getItem('sj_user'))||null}catch{return null}}
+function saveUser(u){localStorage.setItem('sj_user',JSON.stringify(u))}
+function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast'+(t?' '+t:'');el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2800);}
+
+// Load cart
+try{cart=JSON.parse(localStorage.getItem('sj_checkout_cart'))||[];}catch{}
+try{const cd=JSON.parse(localStorage.getItem('sj_checkout_coupon'));if(cd){appliedCoupon=cd.coupon;appliedDisc=cd.disc;}}catch{}
+if(!cart.length){alert('Cart is empty!');window.location.href='index.html';}
+
+// Load saved addresses
+const user=getUser();
+if(!user){alert('Please login first!');window.location.href='index.html';}
+
+function loadAddresses(){
+  const addrs=(user&&user.addresses)||[];
+  const container=document.getElementById('savedAddrs');
+  if(!addrs.length){container.innerHTML='';document.getElementById('newAddrForm').style.display='block';document.getElementById('newAddrToggle').style.display='none';return;}
+  container.innerHTML=addrs.map((a,i)=>`
+    <div class="addr-card ${i===0?'sel':''}" onclick="selectAddr(${i},this)">
+      <strong>${a.name} · ${a.phone}</strong>
+      ${a.line1}, ${a.line2?a.line2+', ':''} ${a.city}, ${a.state} — ${a.pin}
+    </div>`).join('');
+  if(addrs.length)selectedAddr=addrs[0];
+}
+loadAddresses();
+
+function selectAddr(i,el){
+  document.querySelectorAll('.addr-card').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  selectedAddr=(user.addresses||[])[i];
+}
+function toggleNewAddr(){
+  const f=document.getElementById('newAddrForm');
+  f.style.display=f.style.display==='none'?'block':'none';
+}
+
+// PIN Check
+const VALID_PINS=['302001','302002','302003','302004','302015','302016','302017','302018','302019','302020','302021','302022','110001','110002','110011','110016','110017','110018','110019','400001','400002','400003','400016','400018','400019','400020','400028','400051','201301','201304','201305','226001','226002','226010','226016','380001','380002','380003','380006','380013','380015','380051','560001','560002','560003','560010','560011','560016','560018','560034','600001','600002','600003','600014','600018'];
+function checkPIN(){
+  const pin=document.getElementById('aPIN').value.trim();
+  const res=document.getElementById('pinResult');
+  if(pin.length!==6||isNaN(pin)){res.style.display='none';pinOk=false;return;}
+  if(VALID_PINS.includes(pin)){
+    res.className='pin-result pin-ok';res.style.display='flex';
+    res.innerHTML='<i class="fa-solid fa-circle-check"></i> Delivery available! Estimated: 3-5 business days';
+    pinOk=true;
+  }else{
+    res.className='pin-result pin-fail';res.style.display='flex';
+    res.innerHTML='<i class="fa-solid fa-circle-xmark"></i> Delivery not available at this PIN code';
+    pinOk=false;
+  }
+}
+function saveAddress(){
+  const name=document.getElementById('aName').value.trim();
+  const phone=document.getElementById('aPhone').value.trim();
+  const line1=document.getElementById('aLine1').value.trim();
+  const city=document.getElementById('aCity').value.trim();
+  const state=document.getElementById('aState').value;
+  const pin=document.getElementById('aPIN').value.trim();
+  if(!name||!phone||!line1||!city||!state||!pin){showToast('Fill all required fields','err');return;}
+  if(!pinOk){showToast('Check PIN code first','err');return;}
+  const addr={name,phone,line1,line2:document.getElementById('aLine2').value.trim(),city,state,pin};
+  if(!user.addresses)user.addresses=[];
+  user.addresses.unshift(addr);
+  saveUser(user);selectedAddr=addr;
+  showToast('Address saved!','ok');
+  document.getElementById('newAddrForm').style.display='none';
+  document.getElementById('newAddrToggle').style.display='flex';
+  loadAddresses();
+}
+
+// Coupon
+function applyCoupon(){
+  const code=document.getElementById('couponInput').value.trim().toUpperCase();
+  const res=document.getElementById('couponResult');
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  if(!code){showToast('Enter a coupon code','err');return;}
+  const c=COUPONS[code];
+  if(!c){res.className='coupon-result pin-fail';res.style.display='block';res.textContent='❌ Invalid coupon code';appliedCoupon=null;appliedDisc=0;renderSummary();return;}
+  appliedCoupon=code;
+  appliedDisc=c.type==='percent'?Math.round(sub*c.val/100):Math.min(c.val,sub);
+  res.className='coupon-result pin-ok';res.style.display='block';
+  res.innerHTML=`✅ "${code}" applied! You save ${fmt(appliedDisc)}`;
+  renderSummary();showToast('Coupon applied! 🎉','ok');
+}
+
+// Payment selection
+function selectPay(el,val){
+  document.querySelectorAll('.pay-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');payMethod=val;
+}
+
+// Render order items + summary
+function renderOrderItems(){
+  document.getElementById('orderItems').innerHTML=cart.map(item=>`
+    <div class="order-item">
+      <div class="oi-img">${item.imgUrl?`<img src="${item.imgUrl}" alt="">`:(item.emoji||'💍')}</div>
+      <div style="flex:1"><div class="oi-name">${item.name}</div><div class="oi-qty">Qty: ${item.qty}</div></div>
+      <div class="oi-price">${fmt(item.price*item.qty)}</div>
+    </div>`).join('');
+}
+function renderSummary(){
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const del=sub>=FREE_SHIP?0:DEL;
+  const total=Math.max(0,sub+del-appliedDisc);
+  document.getElementById('orderSummary').innerHTML=`
+    <div class="sum-row"><span>Subtotal (${cart.reduce((s,i)=>s+i.qty,0)} items)</span><strong>${fmt(sub)}</strong></div>
+    <div class="sum-row"><span>Delivery</span><strong>${del===0?'<span style="color:var(--green)">FREE</span>':fmt(del)}</strong></div>
+    ${appliedDisc?`<div class="sum-row"><span>Discount (${appliedCoupon})</span><strong style="color:var(--green)">-${fmt(appliedDisc)}</strong></div>`:''}
+    <div class="sum-total"><span>Total</span><strong>${fmt(total)}</strong></div>`;
+}
+renderOrderItems();renderSummary();
+
+// Place order
+function placeOrder(){
+  if(!selectedAddr){showToast('Please add/select delivery address','err');return;}
+  if(!pinOk&&!((user.addresses||[]).length)){showToast('Check PIN code delivery','err');return;}
+  const sub=cart.reduce((s,i)=>s+i.price*i.qty,0);
+  const del=sub>=FREE_SHIP?0:DEL;
+  const total=Math.max(0,sub+del-appliedDisc);
+  const orderId='SJ'+Date.now();
+
+  if(payMethod==='cod'){
+    confirmOrder(orderId,'COD',total);return;
+  }
+
+  // Razorpay
+  const settings=JSON.parse(localStorage.getItem('sj_settings')||'{}');
+  const rzpKey=settings.rzp||'rzp_test_YourKeyHere'; // Replace with your key
+  const options={
+    key:rzpKey,
+    amount:total*100, // paise
+    currency:'INR',
+    name:'Shivam Jewellers',
+    description:'Jewellery Order #'+orderId,
+    image:'',
+    prefill:{name:user.name||'',email:user.email||'',contact:user.phone||''},
+    theme:{color:'#e8889a'},
+    handler:function(response){
+      confirmOrder(orderId,'Razorpay',total,response.razorpay_payment_id);
+    },
+    modal:{ondismiss:function(){showToast('Payment cancelled','err');}}
+  };
+  try{
+    const rzp=new Razorpay(options);rzp.open();
+  }catch(e){
+    showToast('Razorpay not loaded — add your real key in Admin > Settings','err');
+    // Fallback: confirm as demo
+    setTimeout(()=>confirmOrder(orderId,'Demo',total),1500);
+  }
+}
+
+function confirmOrder(id,method,total,payId){
+  const order={id,items:[...cart],address:selectedAddr,total,payMethod:method,payId:payId||null,status:'Confirmed',placedAt:new Date().toISOString(),tracking:[
+    {status:'Order Placed',time:new Date().toISOString(),done:true},
+    {status:'Processing',time:null,done:false},
+    {status:'Shipped',time:null,done:false},
+    {status:'Out for Delivery',time:null,done:false},
+    {status:'Delivered',time:null,done:false},
+  ]};
+  // Save to user
+  if(!user.orders)user.orders=[];
+  user.orders.unshift(order);
+  saveUser(user);
+  // Save to admin orders
+  let adminOrders=JSON.parse(localStorage.getItem('sj_orders')||'[]');
+  adminOrders.unshift({...order,userName:user.name,userPhone:user.phone});
+  localStorage.setItem('sj_orders',JSON.stringify(adminOrders));
+  // Clear cart
+  localStorage.removeItem('sj_cart');localStorage.removeItem('sj_checkout_cart');localStorage.removeItem('sj_checkout_coupon');
+  // Redirect to success
+  localStorage.setItem('sj_last_order',JSON.stringify(order));
+  window.location.href='account.html#order-'+id;
+}
+</script>
+</body>
+</html>

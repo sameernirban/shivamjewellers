@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>My Account — Shivam Jewellers</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--pink:#f2a7b8;--rose:#e8889a;--pink-l:#fdf0f3;--pink-m:#fce4eb;--pink-d:#c97b8e;--text:#1a1a2e;--muted:#7a7a8a;--border:#f0e0e5;--green:#2e7d32;--red:#c62828}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#f5f5f8;color:var(--text)}
+.header{background:#fff;border-bottom:1px solid var(--border);padding:0 16px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.logo{font-family:'Playfair Display',serif;font-size:18px;font-weight:700}
+.logo em{color:var(--rose);font-style:normal}
+.wrap{max-width:1100px;margin:0 auto;padding:20px 16px;display:grid;grid-template-columns:1fr;gap:20px}
+@media(min-width:768px){.wrap{grid-template-columns:240px 1fr;padding:32px 24px}}
+/* SIDEBAR */
+.aside{display:flex;flex-direction:column;gap:0}
+.user-card{background:#fff;border-radius:16px;border:1px solid var(--border);padding:20px;text-align:center;margin-bottom:16px}
+.user-av{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--pink),var(--rose));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:#fff;margin:0 auto 10px}
+.user-name{font-size:16px;font-weight:600;margin-bottom:2px}
+.user-phone{font-size:13px;color:var(--muted)}
+.aside-nav{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden}
+.aside-nav a{display:flex;align-items:center;gap:12px;padding:13px 16px;font-size:14px;font-weight:500;color:var(--muted);cursor:pointer;transition:.2s;border-left:3px solid transparent;text-decoration:none}
+.aside-nav a:hover{color:var(--rose);background:var(--pink-l)}
+.aside-nav a.active{color:var(--rose);background:var(--pink-l);border-left-color:var(--rose)}
+.aside-nav a i{width:18px;text-align:center}
+/* Mobile tabs */
+.mobile-tabs{display:flex;overflow-x:auto;scrollbar-width:none;background:#fff;border-radius:14px;border:1px solid var(--border);margin-bottom:16px;padding:4px}
+@media(min-width:768px){.mobile-tabs{display:none}.aside{display:block}}
+.mobile-tabs::-webkit-scrollbar{display:none}
+.mtab{padding:8px 14px;border-radius:10px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;white-space:nowrap;transition:.2s;flex-shrink:0}
+.mtab.active{background:var(--pink-m);color:var(--rose);font-weight:600}
+/* PANELS */
+.panel{display:none}.panel.active{display:block}
+.card{background:#fff;border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.card-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-head h3{font-size:15px;font-weight:600}
+.card-body{padding:20px}
+/* ORDERS */
+.order-card{border:1.5px solid var(--border);border-radius:14px;margin-bottom:14px;overflow:hidden;transition:.2s}
+.order-card:hover{border-color:var(--pink)}
+.order-head{padding:14px 16px;background:var(--pink-l);display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.order-id{font-size:13px;font-weight:600;color:var(--text)}
+.order-date{font-size:12px;color:var(--muted)}
+.order-status{font-size:11px;font-weight:700;padding:3px 10px;border-radius:10px}
+.status-confirmed{background:#e8f5e9;color:var(--green)}
+.status-shipped{background:#e3f2fd;color:#1565c0}
+.status-delivered{background:#e8f5e9;color:var(--green)}
+.order-items-list{padding:14px 16px}
+.oitem{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.oitem:last-child{border:none}
+.oitem-img{width:44px;height:44px;background:var(--pink-l);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;overflow:hidden}
+.oitem-img img{width:100%;height:100%;object-fit:cover}
+.oitem-name{font-size:13px;font-weight:500;flex:1}
+.oitem-price{font-size:13px;font-weight:600;color:var(--rose)}
+.order-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.order-total{font-size:14px;font-weight:700}
+.track-btn{background:var(--text);color:#fff;border:none;padding:8px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:.2s}
+.track-btn:hover{background:var(--rose)}
+/* TRACKING */
+.tracking-timeline{padding:20px 0}
+.ttrack-item{display:flex;gap:14px;position:relative;padding-bottom:24px}
+.ttrack-item:last-child{padding-bottom:0}
+.ttrack-item::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:1px;background:var(--border)}
+.ttrack-item:last-child::before{display:none}
+.ttrack-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;z-index:1}
+.tdone{background:var(--green);color:#fff}
+.tpending{background:var(--border);color:var(--muted)}
+.tactive{background:var(--rose);color:#fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,136,154,.4)}50%{box-shadow:0 0 0 8px rgba(232,136,154,0)}}
+.ttrack-info{flex:1;padding-top:4px}
+.ttrack-label{font-size:14px;font-weight:500;color:var(--text)}
+.ttrack-time{font-size:12px;color:var(--muted)}
+/* WISHLIST */
+.wish-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+@media(min-width:600px){.wish-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.wish-grid{grid-template-columns:repeat(4,1fr)}}
+.wish-card{background:#fff;border:1.5px solid var(--border);border-radius:12px;overflow:hidden;transition:.25s;cursor:pointer}
+.wish-card:hover{border-color:var(--pink);transform:translateY(-3px)}
+.wish-img{height:140px;background:var(--pink-l);display:flex;align-items:center;justify-content:center;font-size:48px;overflow:hidden;position:relative}
+.wish-img img{width:100%;height:100%;object-fit:cover}
+.wish-info{padding:10px 12px}
+.wish-name{font-size:13px;font-weight:500;margin-bottom:4px}
+.wish-price{font-size:14px;font-weight:700;color:var(--rose);margin-bottom:8px}
+.wish-add{width:100%;background:var(--pink-l);color:var(--rose);border:1.5px solid var(--pink);padding:7px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;transition:.25s}
+.wish-add:hover{background:var(--rose);color:#fff;border-color:var(--rose)}
+.wish-del{position:absolute;top:8px;right:8px;width:28px;height:28px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--red);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+/* ADDRESS */
+.addr-grid{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:600px){.addr-grid{grid-template-columns:1fr 1fr}}
+.addr-c{border:1.5px solid var(--border);border-radius:12px;padding:16px;transition:.2s;position:relative}
+.addr-c:hover{border-color:var(--pink)}
+.addr-c strong{display:block;font-size:14px;font-weight:600;margin-bottom:4px}
+.addr-c p{font-size:13px;color:var(--muted);line-height:1.6}
+.addr-del{position:absolute;top:12px;right:12px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;transition:.2s}
+.addr-del:hover{color:var(--red)}
+/* FORMS */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:5px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.form-group input,.form-group select{padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'DM Sans',sans-serif;outline:none;color:var(--text);background:#fafafa;transition:.2s;width:100%}
+.form-group input:focus,.form-group select:focus{border-color:var(--pink);background:#fff}
+.save-btn{background:var(--rose);color:#fff;border:none;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;margin-top:4px}
+.save-btn:hover{background:var(--pink-d)}
+.logout-btn{background:#fce4e4;color:var(--red);border:1px solid #fca8a8;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-top:12px;transition:.2s}
+.logout-btn:hover{background:#ffcdd2}
+.empty-state{text-align:center;padding:48px 20px;color:var(--muted)}
+.empty-state i{font-size:44px;color:var(--border);margin-bottom:14px;display:block}
+.empty-state a{color:var(--rose);font-weight:600;text-decoration:none}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:#fff;padding:11px 22px;border-radius:25px;font-size:14px;font-weight:500;z-index:1200;transition:.35s;opacity:0;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{background:#2e7d32}
+.toast.err{background:var(--red)}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<div class="header">
+  <a class="logo" href="index.html">Shivam <em>Jewellers</em></a>
+  <a href="index.html" style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px"><i class="fa-solid fa-arrow-left"></i> Shop</a>
+</div>
+
+<div class="wrap">
+  <!-- SIDEBAR (desktop) -->
+  <div class="aside">
+    <div class="user-card">
+      <div class="user-av" id="userAv">U</div>
+      <div class="user-name" id="userName">Loading...</div>
+      <div class="user-phone" id="userPhone"></div>
+    </div>
+    <div class="aside-nav">
+      <a class="active" onclick="showPanel('orders',this)"><i class="fa-solid fa-box"></i> My Orders</a>
+      <a onclick="showPanel('wishlist',this)"><i class="fa-solid fa-heart"></i> Wishlist</a>
+      <a onclick="showPanel('addresses',this)"><i class="fa-solid fa-location-dot"></i> Addresses</a>
+      <a onclick="showPanel('profile',this)"><i class="fa-solid fa-user"></i> Profile</a>
+    </div>
+  </div>
+
+  <div class="right-col">
+    <!-- Mobile tabs -->
+    <div class="mobile-tabs">
+      <div class="mtab active" onclick="showPanel('orders',this)">Orders</div>
+      <div class="mtab" onclick="showPanel('wishlist',this)">Wishlist</div>
+      <div class="mtab" onclick="showPanel('addresses',this)">Addresses</div>
+      <div class="mtab" onclick="showPanel('profile',this)">Profile</div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="panel active" id="panel-orders">
+      <div class="card">
+        <div class="card-head"><h3>My Orders</h3></div>
+        <div class="card-body" id="ordersBody"></div>
+      </div>
+    </div>
+
+    <!-- WISHLIST -->
+    <div class="panel" id="panel-wishlist">
+      <div class="card">
+        <div class="card-head"><h3>My Wishlist ❤️</h3></div>
+        <div class="card-body"><div class="wish-grid" id="wishGrid"></div></div>
+      </div>
+    </div>
+
+    <!-- ADDRESSES -->
+    <div class="panel" id="panel-addresses">
+      <div class="card">
+        <div class="card-head"><h3>Saved Addresses</h3><button class="save-btn" style="padding:8px 16px;font-size:13px" onclick="showAddAddr()">+ Add New</button></div>
+        <div class="card-body">
+          <div class="addr-grid" id="addrGrid"></div>
+          <div id="addAddrForm" style="display:none;margin-top:20px;border-top:1px solid var(--border);padding-top:20px">
+            <h4 style="margin-bottom:16px;font-size:14px">New Address</h4>
+            <div class="fg">
+              <div class="form-group"><label>Name</label><input id="na-name" placeholder="Full name"></div>
+              <div class="form-group"><label>Phone</label><input id="na-phone" type="tel" placeholder="Mobile" maxlength="10"></div>
+              <div class="form-group full"><label>Address Line 1</label><input id="na-l1" placeholder="House no, Street"></div>
+              <div class="form-group full"><label>Address Line 2</label><input id="na-l2" placeholder="Area, Landmark (optional)"></div>
+              <div class="form-group"><label>City</label><input id="na-city" placeholder="City"></div>
+              <div class="form-group"><label>State</label>
+                <select id="na-state"><option>Select state</option><option>Rajasthan</option><option>Delhi</option><option>Maharashtra</option><option>Gujarat</option><option>Uttar Pradesh</option><option>Karnataka</option><option>Tamil Nadu</option><option>Other</option></select>
+              </div>
+              <div class="form-group"><label>PIN Code</label><input id="na-pin" type="tel" placeholder="PIN code" maxlength="6"></div>
+            </div>
+            <div style="display:flex;gap:10px;margin-top:14px">
+              <button class="save-btn" onclick="saveNewAddr()">Save Address</button>
+              <button onclick="document.getElementById('addAddrForm').style.display='none'" style="background:#f5f5f8;border:1px solid var(--border);padding:12px 20px;border-radius:25px;font-size:14px;font-weight:500;cursor:pointer">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="panel" id="panel-profile">
+      <div class="card">
+        <div class="card-head"><h3>My Profile</h3></div>
+        <div class="card-body">
+          <div class="fg">
+            <div class="form-group"><label>Full Name</label><input id="p-name" placeholder="Your name"></div>
+            <div class="form-group"><label>Mobile</label><input id="p-phone" disabled style="background:#f0f0f0;color:var(--muted)"></div>
+            <div class="form-group full"><label>Email</label><input id="p-email" type="email" placeholder="your@email.com"></div>
+          </div>
+          <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+          <button class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const fmt=n=>'₹'+Number(n).toLocaleString('en-IN');
+function getUser(){try{return JSON.parse(localStorage.getItem('sj_user'))||null}catch{return null}}
+function saveUser(u){localStorage.setItem('sj_user',JSON.stringify(u))}
+function getWish(){try{return JSON.parse(localStorage.getItem('sj_wish'))||[]}catch{return[]}}
+function saveWish(w){localStorage.setItem('sj_wish',JSON.stringify(w))}
+function getProds(){try{const d=localStorage.getItem('sj_products');return d?JSON.parse(d):null}catch{return null}}
+function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast'+(t?' '+t:'');el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2800);}
+
+let user=getUser();
+if(!user){window.location.href='index.html';throw new Error('No user');}
+
+// Load user info
+function loadUserInfo(){
+  const initials=(user.name||'U').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+  document.getElementById('userAv').textContent=initials;
+  document.getElementById('userName').textContent=user.name||'User';
+  document.getElementById('userPhone').textContent='+91 '+user.phone;
+  document.getElementById('p-name').value=user.name||'';
+  document.getElementById('p-phone').value='+91 '+user.phone;
+  document.getElementById('p-email').value=user.email||'';
+}
+loadUserInfo();
+
+// Panel switching
+function showPanel(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.aside-nav a,.mtab').forEach(a=>a.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(el)el.classList.add('active');
+  if(id==='orders')renderOrders();
+  if(id==='wishlist')renderWishlist();
+  if(id==='addresses')renderAddresses();
+}
+
+// Check hash
+const hash=window.location.hash;
+if(hash.startsWith('#order-')){showPanel('orders',document.querySelector('.aside-nav a'));}
+else if(hash==='#wishlist'){showPanel('wishlist',null);}
+
+// ORDERS
+function renderOrders(){
+  const orders=(user.orders||[]);
+  const body=document.getElementById('ordersBody');
+  if(!orders.length){
+    body.innerHTML=`<div class="empty-state"><i class="fa-solid fa-box-open"></i><div>No orders yet</div><br><a href="index.html">Start Shopping →</a></div>`;
+    return;
+  }
+  body.innerHTML=orders.map(o=>`
+    <div class="order-card">
+      <div class="order-head">
+        <div><div class="order-id">#${o.id}</div><div class="order-date">${new Date(o.placedAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</div></div>
+        <span class="order-status status-confirmed">${o.status}</span>
+      </div>
+      <div class="order-items-list">
+        ${o.items.map(item=>`
+          <div class="oitem">
+            <div class="oitem-img">${item.imgUrl?`<img src="${item.imgUrl}" alt="">`:item.emoji}</div>
+            <div class="oitem-name">${item.name} × ${item.qty}</div>
+            <div class="oitem-price">${fmt(item.price*item.qty)}</div>
+          </div>`).join('')}
+      </div>
+      <div class="order-foot">
+        <span class="order-total">Total: ${fmt(o.total)}</span>
+        <button class="track-btn" onclick="showTracking('${o.id}')">Track Order 📦</button>
+      </div>
+      <div id="track-${o.id}" style="display:none;padding:0 16px 16px">
+        <div class="tracking-timeline">
+          ${(o.tracking||[]).map((t,i)=>`
+            <div class="ttrack-item">
+              <div class="ttrack-dot ${t.done?(i===0||o.tracking[i+1]&&!o.tracking[i+1].done?'tactive':'tdone'):'tpending'}">
+                ${t.done?'<i class="fa-solid fa-check"></i>':'<i class="fa-solid fa-circle" style="font-size:8px"></i>'}
+              </div>
+              <div class="ttrack-info">
+                <div class="ttrack-label" style="font-weight:${t.done?'600':'400'};color:${t.done?'var(--text)':'var(--muted)'}">${t.status}</div>
+                <div class="ttrack-time">${t.time?new Date(t.time).toLocaleString('en-IN'):'Pending'}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+
+  // Show last order tracking if redirected
+  if(hash.startsWith('#order-')){
+    const oid=hash.replace('#order-','');
+    setTimeout(()=>showTracking(oid),300);
+  }
+}
+function showTracking(id){
+  const el=document.getElementById('track-'+id);
+  if(el)el.style.display=el.style.display==='none'?'block':'none';
+}
+renderOrders();
+
+// WISHLIST
+function renderWishlist(){
+  const wishIds=getWish();
+  const DEF_PRODS=[
+    {id:1,name:'Floral Gold Necklace',price:4850,emoji:'📿',imgUrl:null},
+    {id:2,name:'Diamond Solitaire Ring',price:9200,emoji:'💍',imgUrl:null},
+    {id:3,name:'Kundan Jhumka Earrings',price:2200,emoji:'✨',imgUrl:null},
+    {id:4,name:'Temple Gold Bangles',price:6800,emoji:'🔮',imgUrl:null},
+    {id:5,name:'Diamond Tennis Bracelet',price:13500,emoji:'💎',imgUrl:null},
+    {id:6,name:'Bridal Choker Set',price:18500,emoji:'👑',imgUrl:null},
+    {id:7,name:'Gold Mangalsutra',price:3450,emoji:'🌸',imgUrl:null},
+    {id:8,name:'Polki Pendant',price:1850,emoji:'🌟',imgUrl:null},
+    {id:9,name:'Gold Coin 5gm',price:3200,emoji:'🪙',imgUrl:null},
+    {id:10,name:'Rose Gold Ring',price:5600,emoji:'💫',imgUrl:null},
+  ];
+  const allProds=getProds()||DEF_PRODS;
+  const wishProds=allProds.filter(p=>wishIds.includes(p.id));
+  const grid=document.getElementById('wishGrid');
+  if(!wishProds.length){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><i class="fa-regular fa-heart"></i><div>Nothing saved yet</div><br><a href="index.html">Explore Jewellery →</a></div>`;return;}
+  grid.innerHTML=wishProds.map(p=>`
+    <div class="wish-card">
+      <div class="wish-img">
+        ${p.imgUrl?`<img src="${p.imgUrl}" alt="">`:`<span>${p.emoji||'💍'}</span>`}
+        <div class="wish-del" onclick="removeWish(${p.id})"><i class="fa-solid fa-xmark"></i></div>
+      </div>
+      <div class="wish-info">
+        <div class="wish-name">${p.name}</div>
+        <div class="wish-price">${fmt(p.price)}</div>
+        <button class="wish-add" onclick='addToCart(${JSON.stringify(p)})'>Add to Cart</button>
+      </div>
+    </div>`).join('');
+}
+function removeWish(id){
+  let w=getWish().filter(x=>x!==id);saveWish(w);renderWishlist();showToast('Removed from wishlist');
+}
+function addToCart(p){
+  let cart=JSON.parse(localStorage.getItem('sj_cart')||'[]');
+  const ex=cart.find(x=>x.id===p.id);
+  if(ex)ex.qty++;else cart.push({...p,qty:1});
+  localStorage.setItem('sj_cart',JSON.stringify(cart));
+  showToast(p.name+' added to cart!','ok');
+}
+
+// ADDRESSES
+function renderAddresses(){
+  const addrs=(user.addresses||[]);
+  const grid=document.getElementById('addrGrid');
+  if(!addrs.length){grid.innerHTML=`<div class="empty-state" style="grid-column:1/-1"><i class="fa-solid fa-location-dot"></i><div>No saved addresses</div></div>`;return;}
+  grid.innerHTML=addrs.map((a,i)=>`
+    <div class="addr-c">
+      <button class="addr-del" onclick="deleteAddr(${i})"><i class="fa-solid fa-xmark"></i></button>
+      <strong>${a.name} · ${a.phone}</strong>
+      <p>${a.line1}${a.line2?', '+a.line2:''}<br>${a.city}, ${a.state} — ${a.pin}</p>
+    </div>`).join('');
+}
+function deleteAddr(i){
+  user.addresses.splice(i,1);saveUser(user);renderAddresses();showToast('Address removed');
+}
+function showAddAddr(){document.getElementById('addAddrForm').style.display='block';}
+function saveNewAddr(){
+  const a={
+    name:document.getElementById('na-name').value.trim(),
+    phone:document.getElementById('na-phone').value.trim(),
+    line1:document.getElementById('na-l1').value.trim(),
+    line2:document.getElementById('na-l2').value.trim(),
+    city:document.getElementById('na-city').value.trim(),
+    state:document.getElementById('na-state').value,
+    pin:document.getElementById('na-pin').value.trim()
+  };
+  if(!a.name||!a.phone||!a.line1||!a.city||!a.pin){showToast('Fill all required fields','err');return;}
+  if(!user.addresses)user.addresses=[];
+  user.addresses.unshift(a);saveUser(user);
+  document.getElementById('addAddrForm').style.display='none';
+  renderAddresses();showToast('Address saved!','ok');
+}
+
+// PROFILE
+function saveProfile(){
+  user.name=document.getElementById('p-name').value.trim();
+  user.email=document.getElementById('p-email').value.trim();
+  saveUser(user);loadUserInfo();
+  // Update in users array
+  let users=JSON.parse(localStorage.getItem('sj_users')||'[]');
+  const idx=users.findIndex(u=>u.phone===user.phone);
+  if(idx>=0)users[idx]=user;
+  localStorage.setItem('sj_users',JSON.stringify(users));
+  showToast('Profile updated!','ok');
+}
+function logout(){
+  if(confirm('Logout from your account?')){localStorage.removeItem('sj_user');window.location.href='index.html';}
+}
+</script>
+</body>
+</html>
